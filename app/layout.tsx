@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter, Space_Grotesk } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import { AuthProvider } from '@/lib/auth-context'
 import { CreditsProvider } from '@/lib/credits-context'
 import './globals.css'
 
@@ -38,9 +39,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.variable} ${spaceGrotesk.variable} font-sans antialiased`}>
-        <CreditsProvider>
-          {children}
-        </CreditsProvider>
+        <AuthProvider>
+          <CreditsProvider>
+            {children}
+          </CreditsProvider>
+        </AuthProvider>
         <Analytics />
       </body>
     </html>
