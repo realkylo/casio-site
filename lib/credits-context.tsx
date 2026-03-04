@@ -44,17 +44,37 @@ export function CreditsProvider({ children }: { children: ReactNode }) {
     latestCreditsRef.current = credits
   }, [credits])
 
-  // Debounced sync to MongoDB — called whenever credits change locally
+  // Track the last synced value so we only sync actual changes
+  const lastSyncedRef = useRef<number>(0)
+
+  // Signed sync to MongoDB — computes delta from last synced value, signs it server-side,
+  // then applies it. This prevents clients from setting arbitrary credit amounts.
   const syncToDb = useCallback(() => {
     if (!user) return
     if (syncTimerRef.current) clearTimeout(syncTimerRef.current)
     syncTimerRef.current = setTimeout(async () => {
+      const current = latestCreditsRef.current
+      const delta = current - lastSyncedRef.current
+      if (delta === 0) return
       try {
-        await fetch("/api/credits", {
+        // Step 1: Get a signed token for this delta
+        const signRes = await fetch("/api/credits/sign", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ action: "set", amount: latestCreditsRef.current }),
+          body: JSON.stringify({ delta }),
         })
+        if (!signRes.ok) return
+        const { token } = await signRes.json()
+
+        // Step 2: Apply the signed delta
+        const res = await fetch("/api/credits", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token }),
+        })
+        if (res.ok) {
+          lastSyncedRef.current = current
+        }
       } catch {
         // silently fail
       }
@@ -85,7 +105,9 @@ export function CreditsProvider({ children }: { children: ReactNode }) {
       const res = await fetch("/api/credits")
       if (res.ok) {
         const data = await res.json()
-        setCreditsRaw(data.credits ?? 0)
+        const val = data.credits ?? 0
+        setCreditsRaw(val)
+        lastSyncedRef.current = val
       }
     } catch {
       // silently fail
@@ -101,20 +123,34 @@ export function CreditsProvider({ children }: { children: ReactNode }) {
     }
   }, [authLoading, refreshCredits])
 
-  // Sync to DB on page unload
+  // Flush pending sync on page unload (best-effort — use visibilitychange for better reliability)
   useEffect(() => {
-    const handleBeforeUnload = () => {
-      if (!user) return
-      navigator.sendBeacon(
-        "/api/credits",
-        new Blob(
-          [JSON.stringify({ action: "set", amount: latestCreditsRef.current })],
-          { type: "application/json" }
-        )
-      )
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "hidden" && user) {
+        // Trigger immediate sync (clear the debounce timer and sync now)
+        if (syncTimerRef.current) clearTimeout(syncTimerRef.current)
+        const current = latestCreditsRef.current
+        const delta = current - lastSyncedRef.current
+        if (delta === 0) return
+        // Use sendBeacon with a simple request — server will handle via signed delta
+        // Since we can't do async signing in beforeunload, we send a sync request via fetch keepalive
+        fetch("/api/credits/sign", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ delta }),
+          keepalive: true,
+        }).then(res => res.json()).then(({ token }) => {
+          fetch("/api/credits", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ token }),
+            keepalive: true,
+          })
+        }).catch(() => {})
+      }
     }
-    window.addEventListener("beforeunload", handleBeforeUnload)
-    return () => window.removeEventListener("beforeunload", handleBeforeUnload)
+    document.addEventListener("visibilitychange", handleVisibilityChange)
+    return () => document.removeEventListener("visibilitychange", handleVisibilityChange)
   }, [user])
 
   // Hydrate wager/promo from sessionStorage

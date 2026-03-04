@@ -240,22 +240,34 @@ export default function UpgradePage() {
 
     // Spin 4-6 full rotations + land in correct zone
     const fullSpins = (4 + Math.floor(Math.random() * 3)) * 360
-    // If win: land in center of green arc (top = 270 canvas deg)
-    // If lose: land in center of red arc
-    let landOffset: number
+
+    // The pointer is at the top of the wheel (canvas angle 270 = top).
+    // The wheel is drawn with green starting at `angle - 90` (i.e., from the top).
+    // So at rotation=0 the green arc starts at top and spans greenDeg clockwise.
+    //
+    // For the pointer (top) to land in green: finalAngle mod 360 must put the
+    // pointer within [0, greenDeg) of the wheel.
+    // For lose: pointer must be in [greenDeg, 360).
+    //
+    // The pointer angle relative to the wheel = (360 - (finalRotation % 360)) % 360
+    // We want: pointerOnWheel = desiredOffset
+    // So: finalRotation % 360 = (360 - desiredOffset) % 360
+
+    let desiredOffset: number
     if (won) {
-      // Green starts at top (270), so land anywhere in greenDeg range - pick center
-      landOffset = greenDeg / 2
+      // Land somewhere safely inside the green zone (10%-90% of the green arc to avoid edges)
+      const safeMargin = Math.max(greenDeg * 0.1, 2)
+      desiredOffset = safeMargin + Math.random() * (greenDeg - 2 * safeMargin)
     } else {
-      // Red is from greenDeg to 360 on the wheel
-      landOffset = greenDeg + (redDeg / 2)
+      // Land somewhere safely inside the red zone
+      const redStart = greenDeg
+      const redSize = 360 - greenDeg
+      const safeMargin = Math.max(redSize * 0.05, 2)
+      desiredOffset = redStart + safeMargin + Math.random() * (redSize - 2 * safeMargin)
     }
-    // We want pointer (at canvas 270) to be at landOffset inside the wheel
-    // currentAngle so that: (270 - targetAngle) % 360 === landOffset
-    // targetAngle = 270 - landOffset + jitter
-    const jitter = (Math.random() - 0.5) * (won ? greenDeg * 0.5 : redDeg * 0.4)
-    const targetLand = 270 - landOffset - jitter
-    const target = rotation + fullSpins + ((targetLand - rotation % 360) + 360) % 360
+
+    const targetRemainder = (360 - desiredOffset + 360) % 360
+    const target = rotation + fullSpins + ((targetRemainder - (rotation % 360)) + 360) % 360
 
     startAngleRef.current = rotation
     targetAngleRef.current = target
