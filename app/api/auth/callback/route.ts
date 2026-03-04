@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from "next/server"
 import { SignJWT } from "jose"
 
 export async function GET(request: NextRequest) {
-  const { searchParams } = new URL(request.url)
-  const code = searchParams.get("code")
+  const url = new URL(request.url)
+  const code = url.searchParams.get("code")
 
   if (!code) {
     return NextResponse.redirect(new URL("/?error=no_code", request.url))
@@ -13,10 +13,9 @@ export async function GET(request: NextRequest) {
   const clientSecret = process.env.DISCORD_CLIENT_SECRET!
   const secret = process.env.NEXTAUTH_SECRET!
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
-    || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000")
-
-  const redirectUri = `${baseUrl}/api/auth/callback`
+  // Build redirect_uri from the actual incoming request URL so it always matches
+  // what Discord sent the user to (crucial for token exchange)
+  const redirectUri = `${url.origin}/api/auth/callback`
 
   try {
     // Exchange code for access token

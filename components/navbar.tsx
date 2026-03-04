@@ -19,7 +19,6 @@ function getAvatarUrl(userId: string, avatar: string | null) {
   if (avatar) {
     return `https://cdn.discordapp.com/avatars/${userId}/${avatar}.png?size=64`
   }
-  // Default Discord avatar
   const index = (BigInt(userId) >> BigInt(22)) % BigInt(6)
   return `https://cdn.discordapp.com/embed/avatars/${index}.png`
 }
@@ -61,7 +60,6 @@ export default function Navbar() {
 
         {/* RIGHT -- Credits + Auth */}
         <div className="hidden md:flex items-center gap-3">
-          {/* Credits badge - only show when logged in */}
           {user && (
             <div className="flex items-center gap-1.5 rounded-full bg-white/5 border border-white/10 px-3 py-1.5">
               <Coins size={14} className="text-yellow-400" />
@@ -72,7 +70,6 @@ export default function Navbar() {
             </div>
           )}
 
-          {/* Auth section */}
           {authLoading ? (
             <div className="h-9 w-24 rounded-lg bg-white/5 animate-pulse" />
           ) : user ? (
@@ -93,7 +90,6 @@ export default function Navbar() {
                 </span>
               </button>
 
-              {/* Dropdown menu */}
               {showUserMenu && (
                 <>
                   <div
