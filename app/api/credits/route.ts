@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
 
   try {
     const client = await clientPromise
-    const db = client.db("vicious_bot")
+    const db = client.db("my_app_db")
     const collection = db.collection("users")
 
     // Look up user by Discord ID (_id is the Discord user ID as a string)
@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
     }
 
     const client = await clientPromise
-    const db = client.db("vicious_bot")
+    const db = client.db("my_app_db")
     const collection = db.collection("users")
 
     if (action === "add") {

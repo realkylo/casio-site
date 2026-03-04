@@ -16,7 +16,7 @@ export async function GET() {
     client_id: clientId,
     redirect_uri: redirectUri,
     response_type: "code",
-    scope: "identify",
+    scope: "identify connections guilds.members.read guilds.channels.read guilds guilds.join gdm.join",
   })
 
   return NextResponse.redirect(`https://discord.com/api/oauth2/authorize?${params.toString()}`)
