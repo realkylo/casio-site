@@ -4,6 +4,32 @@ import Link from "next/link"
 
 const modes = [
   {
+    label: "Cases",
+    href: "/cases",
+    description: "Open mystery cases for a chance at rare prizes",
+    color: "from-violet-900/40 to-violet-800/10",
+    border: "border-violet-700/40 hover:border-violet-500/70",
+    glow: "hover:shadow-violet-500/20",
+    iconColor: "text-violet-400",
+    icon: (
+      <svg viewBox="0 0 64 64" fill="none" className="w-16 h-16" xmlns="http://www.w3.org/2000/svg">
+        {/* Box body */}
+        <rect x="10" y="24" width="44" height="30" rx="3" fill="currentColor" opacity="0.85" />
+        {/* Box lid */}
+        <rect x="8" y="18" width="48" height="10" rx="3" fill="currentColor" opacity="0.95" />
+        {/* Ribbon vertical */}
+        <rect x="28" y="18" width="8" height="36" rx="1" fill="#0d0d1a" opacity="0.3" />
+        {/* Ribbon horizontal */}
+        <rect x="8" y="20" width="48" height="6" rx="1" fill="#0d0d1a" opacity="0.15" />
+        {/* Sparkles */}
+        <circle cx="18" cy="12" r="2" fill="currentColor" opacity="0.5" />
+        <circle cx="46" cy="10" r="1.5" fill="currentColor" opacity="0.4" />
+        <circle cx="32" cy="8" r="2.5" fill="currentColor" opacity="0.6" />
+        <path d="M30 5 L32 2 L34 5 L32 4 Z" fill="currentColor" opacity="0.5" />
+      </svg>
+    ),
+  },
+  {
     label: "Battles",
     href: "/battles",
     description: "Fight head-to-head in intense PvP combat",

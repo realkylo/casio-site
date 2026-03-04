@@ -249,33 +249,27 @@ interface Case {
 
 const CASES: Case[] = [
   {
-    id: "starter", name: "Starter Box", price: 5, rarity: "easy",
+    id: "starter", name: "GiftCard Box", price: 5, rarity: "easy",
     prizes: [
-      { name: "Steam Gift Card $5",   value: 5,  chance: 40, imageUrl: "https://store.cloudflare.steamstatic.com/public/images/gift/steamcards_header.png" },
-      { name: "AirPods Case",          value: 8,  chance: 30, imageUrl: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=200&q=80" },
-      { name: "Gaming Mouse Pad",      value: 12, chance: 20, imageUrl: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=200&q=80" },
-      { name: "Steam Gift Card $10",  value: 10, chance: 8,  imageUrl: "https://store.cloudflare.steamstatic.com/public/images/gift/steamcards_header.png" },
+      { name: "Spam.me 20$",   value: 20,  chance: 40, imageUrl: "https://i.ibb.co/KcX4qGBd/2026-03-05-004211-removebg-preview.png" },
+      { name: "Spam.me 75$",      value: 75, chance: 75, imageUrl: "https://i.ibb.co/hRywCV36/Gemini-Generated-Image-zg5og3zg5og3zg5o-removebg-preview.png" },
+      { name: "Spam.me 50$",  value: 50, chance: 8,  imageUrl: "https://i.ibb.co/gL655Xkr/Gemini-Generated-Image-vca85vca85vca85v-removebg-preview.png" },
+      { name: "Spam.me 25$",  value: 25, chance: 8,  imageUrl: "https://i.ibb.co/4nKNScB3/Gemini-Generated-Image-ncag5sncag5sncag-removebg-preview.png" },
       { name: "Refund",               value: 5,  chance: 2,  imageUrl: "https://images.unsplash.com/photo-1633158829585-23ba8f7c8caf?w=200&q=80" },
     ]
   },
   {
-    id: "tech-basic", name: "Tech Starter", price: 10, rarity: "easy",
+    id: "tech-basic", name: "ALL IN BTW", price: 200, rarity: "hard",
     prizes: [
-      { name: "USB Hub",               value: 8,  chance: 35, imageUrl: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=200&q=80" },
-      { name: "Webcam 1080p",          value: 15, chance: 30, imageUrl: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=200&q=80" },
-      { name: "Steam Card $20",        value: 20, chance: 20, imageUrl: "https://store.cloudflare.steamstatic.com/public/images/gift/steamcards_header.png" },
-      { name: "Mechanical Keyboard",   value: 45, chance: 12, imageUrl: "https://images.unsplash.com/photo-1541140532154-b024d705b90a?w=200&q=80" },
-      { name: "Refund",               value: 10, chance: 3,  imageUrl: "https://images.unsplash.com/photo-1633158829585-23ba8f7c8caf?w=200&q=80" },
+      { name: "GO TO THE STREET",               value: 0,  chance: 99, imageUrl: "https://i.ibb.co/GfVyFHLZ/image2.png" },
+      { name: "Sigma Car Of LIGMA",          value: 3000, chance: 1, imageUrl: "https://i.ibb.co/k2401Qpm/image.png"},
     ]
   },
   {
-    id: "casual", name: "Casual Box", price: 8, rarity: "easy",
+    id: "casual", name: "Electric Box", price: 300, rarity: "easy",
     prizes: [
-      { name: "Nike Socks",            value: 6,  chance: 38, imageUrl: "https://images.unsplash.com/photo-1586350977771-b3b0abd50c82?w=200&q=80" },
-      { name: "Sunglasses",            value: 12, chance: 30, imageUrl: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=200&q=80" },
-      { name: "Perfume Sample Set",    value: 18, chance: 20, imageUrl: "https://images.unsplash.com/photo-1541643600914-78b084683702?w=200&q=80" },
-      { name: "Wallet Leather",        value: 25, chance: 10, imageUrl: "https://images.unsplash.com/photo-1627123424574-724758594e93?w=200&q=80" },
-      { name: "Refund",               value: 8,  chance: 2,  imageUrl: "https://images.unsplash.com/photo-1633158829585-23ba8f7c8caf?w=200&q=80" },
+      { name: "SMS PHONY",            value: 1000,  chance: 2.5, imageUrl: "https://i.ibb.co/gZ51M7ZZ/im555age.png" },
+      { name: "MAGICAL LAPTOP",            value: 1500, chance: 2.5, imageUrl: "https://i.ibb.co/GQ2DbTRr/ima34234ge.png" },
     ]
   },
   {
